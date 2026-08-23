@@ -1,4 +1,5 @@
 import authService from "../services/authService.js";
+import jwt from "../utils/jwt.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -17,13 +18,13 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    console.log(req.body)
     try {
         const user = await authService.loginUser(req.body);
-
+        const token = jwt.generateToken(user);
         res.status(201).json({
             message: "User login successfully",
-            user
+            user,
+            token
         });
 
     } catch (error) {
