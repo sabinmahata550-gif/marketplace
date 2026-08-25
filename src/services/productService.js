@@ -16,9 +16,45 @@ const createProduct = async (data, userId) => {
     }
 };
 
-const getAllProduct = async () => {
+const getAllProduct = async (query) => {
     try {
-        const products = await Product.find()
+        const limit = Number(query.limit) || 10;
+        const skip = Number(query.skip) || 0;
+        const filters = {}
+
+        const { category, brand, min, max, name } = query;
+
+        if (category)
+            filters.category = {
+                $regex: category,
+                $options: "i",
+
+            }
+
+        if (brand)
+            filters.brand = {
+                $regex: brand,
+                $options: "i",
+
+            }
+        if (min || max) {
+            filters.price = {};
+
+            if (min) {
+                filters.price.$gte = (min)
+            }
+
+            if (max) {
+                filters.price.$lte = (max);
+            }
+        }
+
+        if (name) filters.name = {
+            $regex: name, $options: "i"
+        }
+        const products = await Product.find(filters)
+            .limit(limit)
+            .skip(skip)
             .populate("seller", "name email role");
 
         return products;

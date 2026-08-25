@@ -1,16 +1,24 @@
-const validate = (schema) => {
-    return (req, res, next) => {
-        try {
-            req.body = schema.parse(req.body);
+import { ZodError } from 'zod';
 
-            next();
-        } catch (error) {
+const validate = (schema) => (req, res, next) => {
+    try {
+        schema.parse(req.body);
+        next();
+    } catch (error) {
+        if (error instanceof ZodError) {
+            const formattedError = error.format();
+
             return res.status(400).json({
-                message: "Validation failed",
-                errors: error.issues,
+                success: false,
+                message: "Validation Error",
+                errors: formattedError
             });
         }
-    };
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
 };
 
 export default validate;

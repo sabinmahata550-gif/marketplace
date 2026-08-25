@@ -19,6 +19,8 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
+        console.log("LOGIN CONTROLLER");
+        console.log("BODY:", req.body);
         const user = await authService.loginUser(req.body);
         const token = jwt.generateToken(user);
         res.status(201).json({

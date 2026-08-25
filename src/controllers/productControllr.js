@@ -2,9 +2,10 @@ import productService from "../services/productService.js";
 
 const createProduct = async (req, res) => {
     try {
+       
         const product = await productService.createProduct(
             req.body,
-            req.user._id
+            req.user.id
         );
 
         res.status(201).json({
@@ -12,14 +13,18 @@ const createProduct = async (req, res) => {
             product,
         });
     } catch (error) {
+        console.log("CREATE PRODUCT ERROR:", error);
+
         res.status(error.status || 500).json({
             message: error.message || "Failed to create product",
         });
     }
 };
+
 const getAllProduct = async (req, res) => {
     try {
-        const products = await productService.getAllProduct();
+        const query=req.query;
+        const products = await productService.getAllProduct(query);
 
         res.status(200).json({
             message: "Products fetched successfully",

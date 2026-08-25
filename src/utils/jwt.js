@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 
 const generateToken = (user) => {
+
     const token = jwt.sign(
         {
             id: user._id,
@@ -16,6 +17,8 @@ const generateToken = (user) => {
     return token;
 };
 const verifyToken = (token) => {
+    
+    
     return jwt.verify(token, config.jwt_secret);
 };
 
