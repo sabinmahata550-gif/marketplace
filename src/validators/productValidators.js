@@ -1,29 +1,15 @@
 import { z } from "zod";
 
-const createProductSchema = z.object({
-    name: z
-        .string()
-        .min(2, "Product name must be at least 2 characters")
-        .trim(),
+const productSchema = z.object({
+    name: z.string().min(3).max(50),
 
-    brand: z
-        .string()
-        .min(2, "Brand is required")
-        .trim(),
+    brand: z.string().optional(),
 
-    category: z
-        .string()
-        .min(2, "Category is required")
-        .trim(),
+    category: z.string(),
 
-    price: z
-        .number()
-        .positive("Price must be greater than 0"),
+    price: z.string().min(1).max(1000000),
 
-    stock: z
-        .number()
-        .int("Stock must be an integer")
-        .min(0, "Stock cannot be negative"),
+    stock: z.string().default(1)
 });
 
-export { createProductSchema };
+export default  productSchema;

@@ -1,11 +1,14 @@
 import productService from "../services/productService.js";
+import uploadFile from "../utils/fileuploader.js";
 
 const createProduct = async (req, res) => {
     try {
-       
+        const file = req.files;
+        const imageurl = await uploadFile(file);
         const product = await productService.createProduct(
             req.body,
-            req.user.id
+            req.user.id,
+            imageurl
         );
 
         res.status(201).json({
@@ -23,7 +26,7 @@ const createProduct = async (req, res) => {
 
 const getAllProduct = async (req, res) => {
     try {
-        const query=req.query;
+        const query = req.query;
         const products = await productService.getAllProduct(query);
 
         res.status(200).json({
