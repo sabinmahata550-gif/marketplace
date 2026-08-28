@@ -33,6 +33,9 @@ const userSchema = new mongoose.Schema(
             enum: [CUSTOMER_ROLE, SELLER_ROLE, ADMIN_ROLE],
             default: CUSTOMER_ROLE,
         },
+        profileUrl: {
+            type: String,
+        }
     },
     {
         timestamps: true,
